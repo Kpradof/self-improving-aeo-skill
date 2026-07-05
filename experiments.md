@@ -47,3 +47,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 37 | Numbered steps opening with timing/trigger | 85.4% (41/48) | -8.4 | REVERT | Targeted one failing question, cost more elsewhere; the champion is now hard to beat with narrow rules |
 | 38 | Plain H1: entity + category, no taglines | 89.6% (43/48) | -4.2 | REVERT | Title words rarely collide with questions; taglines were harmless |
 | 39 | Evict section-owned facts from the intro | 85.4% (41/48) | -8.4 | REVERT | Third intro-family failure (16, 31, 39): every intro constraint destabilizes the rewriter more than it fixes retrieval |
+| 40 | Mission reframe: passage-retrieval mechanics in preamble | 85.4% (41/48) | -8.4 | REVERT | Explaining the mechanism made the rewriter over-engineer pages; concrete rules beat conceptual framing |
