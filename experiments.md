@@ -32,3 +32,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 22 | Sections under ~100 words (one quotable unit each) | 87.5% (42/48) | -2.1 | REVERT | Within noise of best; splitting topics into two headings dilutes the winning single-anchor pattern |
 | 23 | Search-term synonyms in parentheses at the fact | 87.5% (42/48) | -2.1 | REVERT | Again 42/48 — three straight experiments land exactly here; best (43/48) may be a lucky sample of the same rule set |
 | 24 | Interaction: inline stat lines + parenthetical synonyms | 81.2% (39/48) | -8.4 | REVERT | Combo hurt — extra annotations everywhere flatten keyword contrast between sections. Rules interact through the retrieval budget |
+| 25 | Rewriter self-check: every likely question → exactly one winning section | 91.7% (44/48) | +2.1 | KEEP | Process rule beats structure rules: pushing retrieval-disambiguation INTO the rewriter fixed both narrative pages (03, 06: 8/8) |
