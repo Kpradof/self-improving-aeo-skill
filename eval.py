@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10,<3.14"
-# dependencies = ["anthropic"]
+# dependencies = ["anthropic", "sentence-transformers"]
 # ///
 """QA-based AEO eval simulating answer-engine retrieval.
 
@@ -94,6 +94,21 @@ def retrieve_chunk(chunks: list[str], question: str) -> str:
     q_words = tokenize(question)
     return max(chunks, key=lambda c: len(q_words & tokenize(c)))
 
+
+_EMBEDDER = None
+
+
+def retrieve_chunk_embedding(chunks: list[str], question: str) -> str:
+    """Semantic retrieval: local sentence-transformers, cosine top-1."""
+    global _EMBEDDER
+    if _EMBEDDER is None:
+        from sentence_transformers import SentenceTransformer
+        _EMBEDDER = SentenceTransformer("all-MiniLM-L6-v2")
+    import numpy as np
+    vecs = _EMBEDDER.encode([question] + chunks, normalize_embeddings=True)
+    sims = vecs[1:] @ vecs[0]
+    return chunks[int(np.argmax(sims))]
+
 JUDGE_SYSTEM = (
     "You grade whether a candidate answer conveys the same fact as the gold answer. "
     "Mark correct=true only if the candidate states the same fact (wording may differ, "
@@ -115,8 +130,11 @@ JUDGE_SCHEMA = {
 CACHE_DIR = REPO / "output" / ".cache" / "eval"
 
 
-def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict) -> bool:
-    excerpt = retrieve_chunk(chunks, q["q"])
+def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict, retrieval: str = "lexical") -> bool:
+    if retrieval == "embedding":
+        excerpt = retrieve_chunk_embedding(chunks, q["q"])
+    else:
+        excerpt = retrieve_chunk(chunks, q["q"])
     # Credit-safe cache: identical (models, excerpt, question, gold) → reuse verdict.
     key = hashlib.sha256(
         f"{READER_MODEL}\n{JUDGE_MODEL}\n{excerpt}\n{q['q']}\n{q['gold']}".encode()
@@ -162,11 +180,11 @@ def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict) -> b
     return correct
 
 
-def eval_page(client: anthropic.Anthropic, page_dir: Path, doc_path: Path) -> tuple[str, int, int]:
+def eval_page(client: anthropic.Anthropic, page_dir: Path, doc_path: Path, retrieval: str) -> tuple[str, int, int]:
     chunks = chunk_page(doc_path.read_text())
     questions = json.loads((page_dir / "questions.json").read_text())["questions"]
     with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(lambda q: grade_question(client, chunks, q), questions))
+        results = list(pool.map(lambda q: grade_question(client, chunks, q, retrieval), questions))
     return page_dir.name, sum(results), len(results)
 
 
@@ -179,9 +197,20 @@ def main() -> None:
         default="rewritten",
         help="'original' scores the raw pages (baseline); 'rewritten' scores output/<set>/",
     )
+    parser.add_argument(
+        "--retrieval",
+        choices=["lexical", "embedding"],
+        default="lexical",
+        help="chunk retrieval mode; 'embedding' uses local sentence-transformers",
+    )
+    parser.add_argument(
+        "--root",
+        default="data",
+        help="dataset root directory (default 'data'; run 2 uses 'data-real')",
+    )
     args = parser.parse_args()
 
-    data_dir = REPO / "data" / args.dataset
+    data_dir = REPO / args.root / args.dataset
     page_dirs = sorted(p for p in data_dir.iterdir() if p.is_dir())
     if not page_dirs:
         sys.exit(f"No pages found in {data_dir}")
@@ -191,14 +220,15 @@ def main() -> None:
     total_correct = 0
     total_questions = 0
 
+    out_root = REPO / "output" if args.root == "data" else REPO / "output" / args.root
     for page_dir in page_dirs:
         if args.source == "original":
             doc_path = page_dir / "original.md"
         else:
-            doc_path = REPO / "output" / args.dataset / page_dir.name / "rewritten.md"
+            doc_path = out_root / args.dataset / page_dir.name / "rewritten.md"
             if not doc_path.exists():
                 sys.exit(f"Missing {doc_path} — run rewrite.py --set {args.dataset} first")
-        name, correct, n = eval_page(client, page_dir, doc_path)
+        name, correct, n = eval_page(client, page_dir, doc_path, args.retrieval)
         per_page[name] = f"{correct}/{n}"
         total_correct += correct
         total_questions += n
@@ -210,6 +240,8 @@ def main() -> None:
     print("RESULT " + json.dumps({
         "set": args.dataset,
         "source": args.source,
+        "retrieval": args.retrieval,
+        "root": args.root,
         "overall": round(overall, 4),
         "pages": per_page,
     }))

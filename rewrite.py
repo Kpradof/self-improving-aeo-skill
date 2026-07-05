@@ -83,13 +83,15 @@ def rewrite_page(client: anthropic.Anthropic, system: str, page_dir: Path, out_d
 def main() -> None:
     parser = argparse.ArgumentParser(description="Rewrite pages using SKILL.md rules")
     parser.add_argument("--set", dest="dataset", choices=["dev", "holdout"], default="dev")
+    parser.add_argument("--root", default="data", help="dataset root (run 2 uses 'data-real')")
     args = parser.parse_args()
 
     rules = (REPO / "SKILL.md").read_text()
     system = SYSTEM_TEMPLATE.format(rules=rules)
 
-    data_dir = REPO / "data" / args.dataset
-    out_dir = REPO / "output" / args.dataset
+    data_dir = REPO / args.root / args.dataset
+    out_root = REPO / "output" if args.root == "data" else REPO / "output" / args.root
+    out_dir = out_root / args.dataset
     page_dirs = sorted(p for p in data_dir.iterdir() if p.is_dir())
     if not page_dirs:
         sys.exit(f"No pages found in {data_dir}")
