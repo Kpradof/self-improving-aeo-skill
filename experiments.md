@@ -36,3 +36,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 26 | Extend labeled rows: support/services/locations | 87.5% (42/48) | -4.2 | REVERT | Fixed the targeted questions (02, 05 up) but narrative pages regressed — longer label lists crowd out the self-check rule's judgment |
 | 27 | Anti-tie clause: strip question words from non-answering sections | 81.2% (39/48) | -10.5 | REVERT | Over-aggressive: rewriter stripped legit keywords from fact sections too; 'remove words' instructions are dangerous |
 | 28 | Positive anti-tie: strengthen the answering section only | 89.6% (43/48) | -2.1 | REVERT | Better than exp27's stripping but still under champion; self-check as-is already handles most ties |
+| 29 | Active voice, subject-verb-object sentences | 87.5% (42/48) | -4.2 | REVERT | Style-level rules don't move a retrieval-dominated metric; extraction already works once the right chunk is found |
