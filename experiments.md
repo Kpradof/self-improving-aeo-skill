@@ -49,3 +49,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 39 | Evict section-owned facts from the intro | 85.4% (41/48) | -8.4 | REVERT | Third intro-family failure (16, 31, 39): every intro constraint destabilizes the rewriter more than it fixes retrieval |
 | 40 | Mission reframe: passage-retrieval mechanics in preamble | 85.4% (41/48) | -8.4 | REVERT | Explaining the mechanism made the rewriter over-engineer pages; concrete rules beat conceptual framing |
 | 41 | Bullet sentences instead of pipe tables | 83.3% (40/48) | -10.5 | REVERT | Format micro-management underperforms letting the rewriter choose per page |
+| 42 | Digits with attached units, never spelled out | 83.3% (40/48) | -10.5 | REVERT | Gold answers use original phrasing; converting 'four hours' to '4 hours' can even hurt judge matching. Formatting rules keep losing |
