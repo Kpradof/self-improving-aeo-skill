@@ -40,3 +40,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 30 | Simplification: delete 'clear prose' rule | 87.5% (42/48) | -4.2 | REVERT | Even a bland rule contributes; removal isn't free |
 | 31 | Intro = one definitional sentence only | 89.6% (43/48) | -2.1 | REVERT | Three pages at 8/8 but page 02 collapsed to 5/8 (agency page needs its founding-story context); close but under champion |
 | 32 | Person + role + affiliation in one sentence | 85.4% (41/48) | -6.3 | REVERT | People questions weren't failing; rule spent rewriter attention where there was nothing to win |
+| 33 | Self-check via explicit search simulation over ~100-word passages | 81.2% (39/48) | -10.5 | REVERT | Rewriting the champion's best rule made it worse — 'exactly one section' phrasing was load-bearing; don't paraphrase winners |
