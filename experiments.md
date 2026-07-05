@@ -26,3 +26,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 16 | Entity named at most once in intro | 81.2% (39/48) | -8.4 | REVERT | Directionally right on page 01 but rewriter reshuffles whole pages; single-sample variance dominates small negative-space rules |
 | 17 | Key-facts table immediately after H1 | 85.4% (41/48) | -4.2 | REVERT | Duplicating facts up top splits retrieval between summary and section chunks; page 06 lost narrative context rows |
 | 18 | Rigid page skeleton (H1 → 1-line intro → fact sections → narrative last) | 85.4% (41/48) | -4.2 | REVERT | Templating didn't tame variance; pushing narrative last hurts story pages (03: 5/8) whose questions live in the narrative |
+| 19 | Labeled stat lines inline within narrative | 87.5% (42/48) | -2.1 | REVERT | Close (page 03 recovered 7/8) but page 04 wobbled 8→6; within noise band of best, not above it |
