@@ -74,3 +74,13 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 **Method finding (the big one):** rewrite sampling variance (~±7-9 pts) exceeds most single-rule effects. The 93.8% best sample was luck; several REVERTed rules may have been real improvements lost to noise. **Next run: gate keep/revert on the mean of 3 rewrite samples**, not one.
 
 **Ideas for run 2:** mean-of-3 gating · per-page-type rule branches (product vs narrative) · larger dev set to cut eval noise · test rules against embedding-based retrieval, not just lexical.
+
+## Run 2 setup (2026-07-05) — real pages
+
+Corpus: 14 real scraped pages (9 dev / 5 holdout), 112 agent-generated questions, stratified (pricing, landing, blog/guide). Pages in `data-real/` (gitignored — copyright); sources logged per page in `source.txt`. Protocol: `program2.md` (mean-of-3 gating, dual retrieval, plan-subagent rewrites).
+
+**Baselines (dev, original pages):**
+- Lexical retrieval: **56.9%** (41/72)
+- Embedding retrieval (MiniLM): **40.3%** (29/72)
+
+Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages are messier and semantic retrieval is much harder. Headroom is large. Experiments start next session.
