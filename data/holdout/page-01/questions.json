@@ -1,0 +1,13 @@
+{
+  "page": "page-01",
+  "questions": [
+    {"q": "How much does the Northwind Breeze plan cost?", "gold": "$6 per month"},
+    {"q": "How much storage does the Gale plan include?", "gold": "75 GB"},
+    {"q": "How much does the Tempest plan cost?", "gold": "$45 per month"},
+    {"q": "How many sites can the Tempest plan host?", "gold": "Up to 10"},
+    {"q": "What discount does Northwind offer for annual commitment?", "gold": "15%"},
+    {"q": "How long are Northwind's daily backups retained?", "gold": "30 days"},
+    {"q": "What uptime did Northwind deliver over the last calendar year?", "gold": "99.97%"},
+    {"q": "Where is Northwind's support team located?", "gold": "Rotterdam"}
+  ]
+}

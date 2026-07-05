@@ -1,0 +1,13 @@
+{
+  "page": "page-04",
+  "questions": [
+    {"q": "How many automated workflows can a standard Salesnest account run?", "gold": "Up to 500"},
+    {"q": "Which tools does Salesnest offer native two-way sync with?", "gold": "HubSpot, Mailchimp, and WhatsApp Business"},
+    {"q": "What is the contact limit on a Salesnest account before needing the high-volume tier?", "gold": "100,000 contacts"},
+    {"q": "What is the maximum file attachment size in Salesnest?", "gold": "25 MB"},
+    {"q": "How many custom fields does Salesnest allow?", "gold": "200"},
+    {"q": "Where are Salesnest's servers located?", "gold": "Frankfurt"},
+    {"q": "What was Salesnest's uptime over the past twelve months?", "gold": "99.95%"},
+    {"q": "How long is the Salesnest free trial?", "gold": "21 days"}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "page": "page-05",
+  "questions": [
+    {"q": "On what date does the 'Answer Engines & The New Buyer Journey' summit take place?", "gold": "Thursday, March 12, 2026"},
+    {"q": "What time does the summit start?", "gold": "10:00 AM Eastern"},
+    {"q": "How long does the summit run?", "gold": "Four hours"},
+    {"q": "How much does registration cost?", "gold": "Free"},
+    {"q": "How many attendees can join the live Q&A rooms?", "gold": "500"},
+    {"q": "Who opens the summit?", "gold": "Dr. Lena Okafor of Meridian Labs"},
+    {"q": "Who moderates the closing panel?", "gold": "Jamie Aldridge of the Search Futures podcast"},
+    {"q": "According to the page, what share of B2B software evaluations now begin with an AI assistant?", "gold": "Around 27%"}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "page": "page-03",
+  "questions": [
+    {"q": "Which four newsletter platforms were tested?", "gold": "Beehiiv, ConvertKit (Kit), Mailerlite, and Buttondown"},
+    {"q": "How many subscribers did the list have at the start of the test?", "gold": "24,000"},
+    {"q": "How long did the test run?", "gold": "Six months"},
+    {"q": "Which platform was cheapest for a 6,000-subscriber list, and at what price?", "gold": "Beehiiv at $49 per month"},
+    {"q": "Which platform had the best inbox placement, and what was its rate?", "gold": "Buttondown, 97%"},
+    {"q": "What was Mailerlite's inbox placement rate?", "gold": "89%"},
+    {"q": "Which platform had the most powerful automation builder?", "gold": "ConvertKit (Kit)"},
+    {"q": "Which platform did the team choose for the main newsletter?", "gold": "Beehiiv"}
+  ]
+}

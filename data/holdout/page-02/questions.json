@@ -1,0 +1,13 @@
+{
+  "page": "page-02",
+  "questions": [
+    {"q": "In what year was Clínica Dental Sonrisa Norte founded?", "gold": "2012"},
+    {"q": "Who founded Sonrisa Norte?", "gold": "Dr. Alejandra Fuentes"},
+    {"q": "How many dentists work at Sonrisa Norte?", "gold": "Six"},
+    {"q": "Where are Sonrisa Norte's two locations?", "gold": "San Pedro and Valle Oriente"},
+    {"q": "How much does a first consultation cost at Sonrisa Norte?", "gold": "650 pesos"},
+    {"q": "What is the maximum length of Sonrisa Norte's interest-free payment plans?", "gold": "12 months"},
+    {"q": "What are Sonrisa Norte's Saturday hours?", "gold": "9:00 to 14:00"},
+    {"q": "Which insurance companies does Sonrisa Norte work with?", "gold": "GNP, AXA, and MetLife"}
+  ]
+}

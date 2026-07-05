@@ -1,0 +1,13 @@
+{
+  "page": "page-02",
+  "questions": [
+    {"q": "In what year was Brightfield Collective founded?", "gold": "2016"},
+    {"q": "Where is Brightfield Collective headquartered?", "gold": "Austin, Texas"},
+    {"q": "What four services does Brightfield Collective offer?", "gold": "Paid media, SEO, lifecycle email, and brand strategy"},
+    {"q": "How many people work at Brightfield Collective?", "gold": "32"},
+    {"q": "When did Brightfield open its Mexico City studio?", "gold": "2021"},
+    {"q": "Who are the co-founders of Brightfield Collective?", "gold": "Maya Brightfield and Tomás Delgado"},
+    {"q": "What is the starting price of a Brightfield retainer?", "gold": "$8,500 per month"},
+    {"q": "How long is Brightfield's Foundation Sprint?", "gold": "Four weeks"}
+  ]
+}

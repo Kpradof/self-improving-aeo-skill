@@ -1,0 +1,13 @@
+{
+  "page": "page-03",
+  "questions": [
+    {"q": "What did the newsletter's open rate fall to during the crash?", "gold": "11%"},
+    {"q": "What was the newsletter's open rate before the crash?", "gold": "38%"},
+    {"q": "What Gmail sending threshold triggers the DMARC requirement mentioned in the article?", "gold": "More than 5,000 Gmail addresses per day"},
+    {"q": "What was the single highest-impact deliverability fix?", "gold": "Adding a DMARC record (authentication)"},
+    {"q": "What percentage of the email list was removed after the re-engagement campaign?", "gold": "22%"},
+    {"q": "What text-to-image balance did the rebuilt email template use?", "gold": "Roughly 60% text"},
+    {"q": "What did the spam placement rate drop below after the fixes?", "gold": "2%"},
+    {"q": "What is the newsletter's open rate today, after the recovery?", "gold": "42%"}
+  ]
+}

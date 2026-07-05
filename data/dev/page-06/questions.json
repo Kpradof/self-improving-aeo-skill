@@ -1,0 +1,13 @@
+{
+  "page": "page-06",
+  "questions": [
+    {"q": "What was Marisol Home's cart abandonment rate before the fix?", "gold": "74%"},
+    {"q": "What furniture-industry cart abandonment benchmark did the team use?", "gold": "68%"},
+    {"q": "How many emails are in Marisol Home's cart recovery sequence?", "gold": "Three"},
+    {"q": "When is the first recovery email sent after cart abandonment?", "gold": "One hour after abandonment"},
+    {"q": "What incentive does the third recovery email offer?", "gold": "Free white-glove delivery"},
+    {"q": "What percentage of abandoned carts did the sequence recover in the first quarter?", "gold": "11%"},
+    {"q": "What is Marisol Home's average order value?", "gold": "Around $340"},
+    {"q": "How much recovered revenue per month did the sequence generate?", "gold": "Roughly $58,000"}
+  ]
+}

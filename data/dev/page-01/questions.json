@@ -1,0 +1,13 @@
+{
+  "page": "page-01",
+  "questions": [
+    {"q": "How much does the Taskloom Starter plan cost?", "gold": "$9 per user per month"},
+    {"q": "How much does the Taskloom Growth plan cost?", "gold": "$19 per user per month"},
+    {"q": "How is the Taskloom Enterprise plan priced?", "gold": "Custom pricing (contact sales)"},
+    {"q": "What discount does Taskloom offer for annual billing?", "gold": "20% off"},
+    {"q": "How long is the Taskloom free trial?", "gold": "14 days"},
+    {"q": "Does the Taskloom free trial require a credit card?", "gold": "No"},
+    {"q": "How much file storage does the Growth plan include per workspace?", "gold": "50 GB"},
+    {"q": "What is the support response time for Growth customers?", "gold": "Within four hours (priority)"}
+  ]
+}
