@@ -17,3 +17,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 07 | Cut factless marketing filler (page may shrink to 50%) | 83.3% (40/48) | 0.0 | REVERT | Tie — fluff removal helps density but loses incidental keyword matches; net zero |
 | 08 | Minimal intro, topic vocabulary only in its own section | 79.2% (38/48) | -4.1 | REVERT | Right diagnosis (intro steals retrieval) but negative-space rule executed inconsistently by rewriter |
 | 09 | Stack topic terms in heading AND fact sentence | 75.0% (36/48) | -8.3 | REVERT | Backfired: stacking everywhere creates keyword collisions between sections; retrieval margin needs contrast, not global density |
+| 10 | Enumerable facts as tables/bullets, one complete fact per row | 85.4% (41/48) | +2.1 | KEEP | Rows are naturally self-contained retrieval units; first KEEP since exp02 |
