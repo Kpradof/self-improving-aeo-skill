@@ -42,3 +42,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 32 | Person + role + affiliation in one sentence | 85.4% (41/48) | -6.3 | REVERT | People questions weren't failing; rule spent rewriter attention where there was nothing to win |
 | 33 | Self-check via explicit search simulation over ~100-word passages | 81.2% (39/48) | -10.5 | REVERT | Rewriting the champion's best rule made it worse — 'exactly one section' phrasing was load-bearing; don't paraphrase winners |
 | 34 | One topic per section, never fold two themes under one heading | 93.8% (45/48) | +2.1 | KEEP | Topic purity maximizes keyword contrast BETWEEN sections — the structural complement of the self-check rule |
+| 35 | Echo topic noun in heading + first row | 79.2% (38/48) | -14.6 | REVERT | Same family as exp09: any 'repeat keywords' rule degrades global contrast. Density rules are dead — structure + self-check is the winning formula |
