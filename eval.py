@@ -2,18 +2,22 @@
 # requires-python = ">=3.10,<3.14"
 # dependencies = ["anthropic"]
 # ///
-"""QA-based AEO eval: a small model reads each page and answers factual
-questions; answers are graded against gold answers.
+"""QA-based AEO eval simulating answer-engine retrieval.
+
+Answer engines don't read whole pages — they retrieve a fragment and answer
+from it. So: each page is split into ~120-word chunks; for each question,
+the chunk with the highest lexical overlap is retrieved, and a small model
+(Haiku) answers using ONLY that chunk. If the fact is buried in meandering
+prose, separated from its subject, or under an unrelated heading, retrieval
+or extraction fails — exactly the failure mode AEO rewriting must fix.
 
 FIXED FILE — the experiment agent must never modify this script.
-
-The reader is deliberately a small model (Haiku): if a weak reader can
-extract the right answers, the page is genuinely AI-readable.
 """
 
 import argparse
 import json
 import os
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -39,10 +43,55 @@ READER_MODEL = "claude-haiku-4-5"
 JUDGE_MODEL = "claude-haiku-4-5"
 
 READER_SYSTEM = (
-    "You answer questions using ONLY the document provided by the user. "
+    "You answer questions using ONLY the document excerpt provided by the user. "
     "Answer with one short phrase — no explanation, no preamble. "
-    "If the document does not contain the answer, reply exactly: NOT_FOUND"
+    "Do not guess or infer beyond what the excerpt states. "
+    "If the excerpt does not clearly contain the answer, reply exactly: NOT_FOUND"
 )
+
+CHUNK_WORDS = 120
+
+STOPWORDS = {
+    "the", "a", "an", "of", "to", "in", "on", "at", "for", "and", "or", "is",
+    "are", "was", "does", "do", "did", "what", "which", "who", "when", "where",
+    "how", "why", "much", "many", "long", "with", "that", "this", "it", "its",
+    "by", "from", "can", "per", "s",
+}
+
+
+def chunk_page(text: str) -> list[str]:
+    """Split a page into chunks of at most ~CHUNK_WORDS words along paragraphs."""
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    chunks: list[str] = []
+    current: list[str] = []
+    count = 0
+    for para in paragraphs:
+        words = para.split()
+        if len(words) >= CHUNK_WORDS:
+            if current:
+                chunks.append("\n\n".join(current))
+                current, count = [], 0
+            for i in range(0, len(words), CHUNK_WORDS):
+                chunks.append(" ".join(words[i:i + CHUNK_WORDS]))
+            continue
+        if count + len(words) > CHUNK_WORDS and current:
+            chunks.append("\n\n".join(current))
+            current, count = [], 0
+        current.append(para)
+        count += len(words)
+    if current:
+        chunks.append("\n\n".join(current))
+    return chunks
+
+
+def tokenize(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-z0-9$%']+", text.lower()) if w not in STOPWORDS}
+
+
+def retrieve_chunk(chunks: list[str], question: str) -> str:
+    """Naive lexical retrieval: chunk with the most question-word overlap wins."""
+    q_words = tokenize(question)
+    return max(chunks, key=lambda c: len(q_words & tokenize(c)))
 
 JUDGE_SYSTEM = (
     "You grade whether a candidate answer conveys the same fact as the gold answer. "
@@ -62,7 +111,8 @@ JUDGE_SCHEMA = {
 }
 
 
-def grade_question(client: anthropic.Anthropic, document: str, q: dict) -> bool:
+def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict) -> bool:
+    excerpt = retrieve_chunk(chunks, q["q"])
     answer_resp = client.messages.create(
         model=READER_MODEL,
         max_tokens=100,
@@ -71,7 +121,7 @@ def grade_question(client: anthropic.Anthropic, document: str, q: dict) -> bool:
         messages=[
             {
                 "role": "user",
-                "content": f"<document>\n{document}\n</document>\n\nQuestion: {q['q']}",
+                "content": f"<excerpt>\n{excerpt}\n</excerpt>\n\nQuestion: {q['q']}",
             }
         ],
     )
@@ -99,10 +149,10 @@ def grade_question(client: anthropic.Anthropic, document: str, q: dict) -> bool:
 
 
 def eval_page(client: anthropic.Anthropic, page_dir: Path, doc_path: Path) -> tuple[str, int, int]:
-    document = doc_path.read_text()
+    chunks = chunk_page(doc_path.read_text())
     questions = json.loads((page_dir / "questions.json").read_text())["questions"]
     with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(lambda q: grade_question(client, document, q), questions))
+        results = list(pool.map(lambda q: grade_question(client, chunks, q), questions))
     return page_dir.name, sum(results), len(results)
 
 

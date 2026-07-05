@@ -13,7 +13,7 @@ flowchart TB
         A["🧠 Agent reads program.md +\nexperiment history"] --> B["💡 Forms ONE hypothesis\n(e.g. 'answer in first sentence\nimproves extraction')"]
         B --> C["✏️ Mutates SKILL.md\n(the ONLY mutable file)"]
         C --> D["🔁 rewrite.py\nOpus rewrites 6 dev pages\nfollowing the rules"]
-        D --> E["📊 eval.py\nHaiku reads each rewritten page,\nanswers 8 factual questions"]
+        D --> E["📊 eval.py — RAG simulation\npage split into ~120-word chunks,\nbest chunk retrieved per question,\nHaiku answers from that chunk only"]
         E --> F["⚖️ Judge grades answers\nvs gold → accuracy score"]
         F --> G{"Score > best\nso far?"}
         G -- "yes" --> H["✅ git commit\nrule survives"]
@@ -32,7 +32,9 @@ flowchart TB
     loop -.-> guards
 ```
 
-The metric is hard and cheap: **if a small model can extract the right answers from your page, the page is AI-readable.** That's the essence of AEO — and the loop discovers *which* rewrite rules actually move it, with evidence, not opinions.
+The metric is hard, cheap, and realistic: answer engines don't read your whole page — they retrieve a fragment and answer from it. So the eval splits each page into ~120-word chunks, retrieves the best-matching chunk per question, and has a small model answer **from that chunk alone**. If a fact is buried mid-ramble, separated from its subject, or sitting under an unrelated heading, retrieval misses it — exactly the failure AEO rewriting must fix. The loop discovers *which* rewrite rules actually move this metric, with evidence, not opinions.
+
+Verified starting point: original pages score **66.7%**; the v0 rules already lift it to **72.9%**.
 
 ## Files
 

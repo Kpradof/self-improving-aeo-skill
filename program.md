@@ -1,6 +1,6 @@
 # Experiment Program
 
-You are an autonomous research agent improving `SKILL.md` — a set of AEO (Answer Engine Optimization) rewrite rules. Your metric is QA accuracy: a small model reads each rewritten page and answers factual questions; the score is the fraction it gets right.
+You are an autonomous research agent improving `SKILL.md` — a set of AEO (Answer Engine Optimization) rewrite rules. Your metric is QA accuracy under simulated answer-engine retrieval: each rewritten page is split into ~120-word chunks, the best-matching chunk is retrieved per question, and a small model answers from that chunk only. The score is the fraction of questions answered correctly. Rules that keep facts self-contained, near their subject, and lexically findable are the ones that win.
 
 ## The loop
 
