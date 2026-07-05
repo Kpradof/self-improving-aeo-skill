@@ -41,3 +41,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 31 | Intro = one definitional sentence only | 89.6% (43/48) | -2.1 | REVERT | Three pages at 8/8 but page 02 collapsed to 5/8 (agency page needs its founding-story context); close but under champion |
 | 32 | Person + role + affiliation in one sentence | 85.4% (41/48) | -6.3 | REVERT | People questions weren't failing; rule spent rewriter attention where there was nothing to win |
 | 33 | Self-check via explicit search simulation over ~100-word passages | 81.2% (39/48) | -10.5 | REVERT | Rewriting the champion's best rule made it worse — 'exactly one section' phrasing was load-bearing; don't paraphrase winners |
+| 34 | One topic per section, never fold two themes under one heading | 93.8% (45/48) | +2.1 | KEEP | Topic purity maximizes keyword contrast BETWEEN sections — the structural complement of the self-check rule |
