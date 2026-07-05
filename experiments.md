@@ -38,3 +38,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 28 | Positive anti-tie: strengthen the answering section only | 89.6% (43/48) | -2.1 | REVERT | Better than exp27's stripping but still under champion; self-check as-is already handles most ties |
 | 29 | Active voice, subject-verb-object sentences | 87.5% (42/48) | -4.2 | REVERT | Style-level rules don't move a retrieval-dominated metric; extraction already works once the right chunk is found |
 | 30 | Simplification: delete 'clear prose' rule | 87.5% (42/48) | -4.2 | REVERT | Even a bland rule contributes; removal isn't free |
+| 31 | Intro = one definitional sentence only | 89.6% (43/48) | -2.1 | REVERT | Three pages at 8/8 but page 02 collapsed to 5/8 (agency page needs its founding-story context); close but under champion |
