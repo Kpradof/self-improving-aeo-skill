@@ -19,3 +19,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 09 | Stack topic terms in heading AND fact sentence | 75.0% (36/48) | -8.3 | REVERT | Backfired: stacking everywhere creates keyword collisions between sections; retrieval margin needs contrast, not global density |
 | 10 | Enumerable facts as tables/bullets, one complete fact per row | 85.4% (41/48) | +2.1 | KEEP | Rows are naturally self-contained retrieval units; first KEEP since exp02 |
 | 11 | Plain search vocabulary in rows/headings (scoped exp06 retry) | 79.2% (38/48) | -6.2 | REVERT | Vocabulary substitution keeps hurting page 03 (narrative); rewriter strips story keywords questions rely on |
+| 12 | Keep original terminology, reorganize only | 79.2% (38/48) | -6.2 | REVERT | 'Don't reword' constrains the rewriter's wins from rules 4-6 more than it protects page 03 |
