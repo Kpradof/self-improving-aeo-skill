@@ -53,3 +53,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 43 | Rule order: self-check moved to position 1 | 91.7% (44/48) | -2.1 | REVERT | Order matters little; check-last placement (recency) at least ties check-first |
 | 44 | Sections ordered by search likelihood | 89.6% (43/48) | -4.2 | REVERT | Position within page doesn't matter to per-question retrieval; reordering just reshuffles the noise |
 | 45 | Label every fact with its question's noun phrase | 85.4% (41/48) | -8.4 | REVERT | Universal labeling turns pages into glossaries and degrades narrative pages; scoped labels (exp15) were the right dose |
+| 46-48 | Variance check: 3 fresh rewrite samples of the champion ruleset | 75.0% / 83.3% / 79.2% | — | MEASURE | THE run's biggest finding: champion's 93.8% was a lucky sample. True champion mean ≈ 82.8% (n=4, σ≈7 pts). Single-sample keep/revert gating is unreliable — next run must gate on mean-of-3 |
