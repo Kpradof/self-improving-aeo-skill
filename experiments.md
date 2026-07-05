@@ -28,3 +28,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 18 | Rigid page skeleton (H1 → 1-line intro → fact sections → narrative last) | 85.4% (41/48) | -4.2 | REVERT | Templating didn't tame variance; pushing narrative last hurts story pages (03: 5/8) whose questions live in the narrative |
 | 19 | Labeled stat lines inline within narrative | 87.5% (42/48) | -2.1 | REVERT | Close (page 03 recovered 7/8) but page 04 wobbled 8→6; within noise band of best, not above it |
 | 20 | Dedicated 'Results' section with labeled metric rows | 85.4% (41/48) | -4.2 | REVERT | Duplicating metrics into a Results section splits retrieval mass again — same failure family as exp04/exp17 (duplication ≠ coverage) |
+| 21 | Entity name mandatory in every heading | 85.4% (41/48) | -4.2 | REVERT | Entity in every heading makes headings interchangeable for retrieval (all share brand token); differentiation comes from topic words |
