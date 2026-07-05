@@ -13,6 +13,7 @@ extract the right answers, the page is genuinely AI-readable.
 
 import argparse
 import json
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -20,6 +21,20 @@ from pathlib import Path
 import anthropic
 
 REPO = Path(__file__).parent
+
+
+def load_dotenv() -> None:
+    env_file = REPO / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip())
+
+
+load_dotenv()
 READER_MODEL = "claude-haiku-4-5"
 JUDGE_MODEL = "claude-haiku-4-5"
 

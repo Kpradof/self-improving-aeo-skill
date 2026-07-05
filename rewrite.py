@@ -17,6 +17,20 @@ from pathlib import Path
 import anthropic
 
 REPO = Path(__file__).parent
+
+
+def load_dotenv() -> None:
+    env_file = REPO / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip())
+
+
+load_dotenv()
 REWRITER_MODEL = os.environ.get("AEO_REWRITER_MODEL", "claude-opus-4-8")
 
 # Hard constraints live here, outside SKILL.md, so no mutation can relax them.
