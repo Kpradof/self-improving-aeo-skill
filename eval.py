@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.10"
+# requires-python = ">=3.10,<3.14"
 # dependencies = ["anthropic"]
 # ///
 """QA-based AEO eval: a small model reads each page and answers factual

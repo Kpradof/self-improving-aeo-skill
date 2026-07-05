@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.10"
+# requires-python = ">=3.10,<3.14"
 # dependencies = ["anthropic"]
 # ///
 """Apply the rules in SKILL.md to every page in a dataset.
