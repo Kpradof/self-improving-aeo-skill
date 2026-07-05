@@ -6,30 +6,33 @@ Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch): g
 
 ## How it works
 
+```mermaid
+flowchart TB
+    subgraph loop["One experiment cycle (~2-4 min, repeats overnight)"]
+        direction TB
+        A["🧠 Agent reads program.md +\nexperiment history"] --> B["💡 Forms ONE hypothesis\n(e.g. 'answer in first sentence\nimproves extraction')"]
+        B --> C["✏️ Mutates SKILL.md\n(the ONLY mutable file)"]
+        C --> D["🔁 rewrite.py\nOpus rewrites 6 dev pages\nfollowing the rules"]
+        D --> E["📊 eval.py\nHaiku reads each rewritten page,\nanswers 8 factual questions"]
+        E --> F["⚖️ Judge grades answers\nvs gold → accuracy score"]
+        F --> G{"Score > best\nso far?"}
+        G -- "yes" --> H["✅ git commit\nrule survives"]
+        G -- "no" --> I["↩️ git revert\nrule dies"]
+        H --> J["📝 Log result in\nexperiments.md"]
+        I --> J
+        J --> A
+    end
+
+    subgraph guards["Anti-cheating guardrails"]
+        K["🔒 data/holdout/ — frozen,\nagent NEVER reads it.\nFinal check catches overfitting"]
+        L["🚫 eval.py / rewrite.py / data/\nare immutable — can't\n'improve' by editing the exam"]
+        M["🙈 rewrite.py never sees\nthe questions — rules can't\nsmuggle answers in"]
+    end
+
+    loop -.-> guards
 ```
-┌──────────────┐  mutates   ┌──────────────────────────┐
-│    AGENT     │ ─────────► │  SKILL.md                │
-│ (Claude Code │            │  AEO rewrite rules —     │
-│  loop)       │            │  the ONLY mutable file   │
-└──────────────┘            └───────────┬──────────────┘
-       ▲                                │ applied by rewrite.py
-       │ score                          ▼
-┌──────┴───────┐   grades   ┌──────────────────────────┐
-│   eval.py    │ ◄───────── │  rewritten dev pages     │
-│  fixed judge │            │  (output/dev/...)        │
-└──────────────┘            └──────────────────────────┘
-```
 
-One experiment cycle:
-
-1. Agent reads `program.md` + the history in `experiments.md`, forms a hypothesis
-2. Agent edits **only** `SKILL.md` (the rewrite rules)
-3. `rewrite.py` rewrites every page in `data/dev/` following those rules
-4. `eval.py` has a small model (Haiku) read each rewritten page and answer 8 factual questions; answers are graded against gold answers → **accuracy score**
-5. Score beats the best so far → `git commit` (rule survives). Otherwise → revert (rule dies)
-6. Log hypothesis + result in `experiments.md`, repeat
-
-The metric is hard and cheap: **if a small model can extract the right answers from your page, the page is AI-readable.**
+The metric is hard and cheap: **if a small model can extract the right answers from your page, the page is AI-readable.** That's the essence of AEO — and the loop discovers *which* rewrite rules actually move it, with evidence, not opinions.
 
 ## Files
 
