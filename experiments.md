@@ -23,3 +23,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 13 | Canonical question checklist + qualifiers in rows (bundled — mistake) | 83.3% (40/48) | -2.1 | REVERT | Pages 01-02 hit 8/8 but 05-06 dropped: flooding pages with question-headings recreates collisions. Unbundle next |
 | 14 | Keep qualifiers attached to values in rows (unbundled from exp13) | 87.5% (42/48) | +2.1 | KEEP | Page 06 8/8: 'in the first quarter' attached to '11%' lets strict reader confirm; qualifiers were the good half of exp13 |
 | 15 | Labeled logistics rows (Date:/Duration:/Team size:/Founded:/Trial:) | 89.6% (43/48) | +2.1 | KEEP | Event page 8/8; labeled rows beat extra question-headings — retrieval anchors without collisions |
+| 16 | Entity named at most once in intro | 81.2% (39/48) | -8.4 | REVERT | Directionally right on page 01 but rewriter reshuffles whole pages; single-sample variance dominates small negative-space rules |
