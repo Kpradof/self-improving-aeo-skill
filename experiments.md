@@ -52,3 +52,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 42 | Digits with attached units, never spelled out | 83.3% (40/48) | -10.5 | REVERT | Gold answers use original phrasing; converting 'four hours' to '4 hours' can even hurt judge matching. Formatting rules keep losing |
 | 43 | Rule order: self-check moved to position 1 | 91.7% (44/48) | -2.1 | REVERT | Order matters little; check-last placement (recency) at least ties check-first |
 | 44 | Sections ordered by search likelihood | 89.6% (43/48) | -4.2 | REVERT | Position within page doesn't matter to per-question retrieval; reordering just reshuffles the noise |
+| 45 | Label every fact with its question's noun phrase | 85.4% (41/48) | -8.4 | REVERT | Universal labeling turns pages into glossaries and degrades narrative pages; scoped labels (exp15) were the right dose |
