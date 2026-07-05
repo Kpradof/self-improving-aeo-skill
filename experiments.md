@@ -55,3 +55,22 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 45 | Label every fact with its question's noun phrase | 85.4% (41/48) | -8.4 | REVERT | Universal labeling turns pages into glossaries and degrades narrative pages; scoped labels (exp15) were the right dose |
 | 46-48 | Variance check: 3 fresh rewrite samples of the champion ruleset | 75.0% / 83.3% / 79.2% | — | MEASURE | THE run's biggest finding: champion's 93.8% was a lucky sample. True champion mean ≈ 82.8% (n=4, σ≈7 pts). Single-sample keep/revert gating is unreliable — next run must gate on mean-of-3 |
 | 49-50 | Mean of simple 5-rule set (exp02 era): 3 samples | 83.3% / 75.0% / 79.2% | — | MEASURE | Simple-set mean 79.2% vs champion mean 82.8%: the 4 extra rules buy ~+3.6 pts on average — real but modest; most of the lift (66.7→~80) comes from the first two structural rules |
+
+## Run 1 summary (2026-07-05, 50 experiments, Opus 4.8 rewriter)
+
+**Scores** (QA accuracy under simulated answer-engine retrieval):
+- Dev baseline (original pages): 66.7%
+- Champion ruleset, best sample: 93.8% · mean of 4 samples: 82.8% (σ ≈ 7 pts)
+- Holdout baseline: 62.5% → champion on holdout: **83.3% (+20.8 pts)** — rules generalize; no overfitting.
+
+**Rules that survived (the champion, 9 rules):** self-contained sentences with explicit entities (exp01) · question-shaped headings (exp02) · one complete fact per row with qualifiers attached (exp10+14) · labeled logistics rows (exp15) · rewriter self-check "every question → exactly one winning section" (exp25) · one topic per section (exp34).
+
+**What died, by family:**
+- Duplication (FAQ, key-facts box, Results section): splits retrieval mass — coverage ≠ copies (exp04, 17, 20).
+- Keyword density/stacking anywhere: destroys contrast BETWEEN sections (exp09, 11, 24, 35).
+- Intro constraints (minimal, definitional, fact-eviction): destabilize the rewriter more than they fix retrieval (exp08, 16, 31, 39).
+- Formatting micro-management (active voice, digits, bullets-vs-tables, plain H1): style doesn't move a retrieval-dominated metric (exp29, 38, 41, 42).
+
+**Method finding (the big one):** rewrite sampling variance (~±7-9 pts) exceeds most single-rule effects. The 93.8% best sample was luck; several REVERTed rules may have been real improvements lost to noise. **Next run: gate keep/revert on the mean of 3 rewrite samples**, not one.
+
+**Ideas for run 2:** mean-of-3 gating · per-page-type rule branches (product vs narrative) · larger dev set to cut eval noise · test rules against embedding-based retrieval, not just lexical.
