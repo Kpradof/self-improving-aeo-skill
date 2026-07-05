@@ -30,3 +30,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 20 | Dedicated 'Results' section with labeled metric rows | 85.4% (41/48) | -4.2 | REVERT | Duplicating metrics into a Results section splits retrieval mass again — same failure family as exp04/exp17 (duplication ≠ coverage) |
 | 21 | Entity name mandatory in every heading | 85.4% (41/48) | -4.2 | REVERT | Entity in every heading makes headings interchangeable for retrieval (all share brand token); differentiation comes from topic words |
 | 22 | Sections under ~100 words (one quotable unit each) | 87.5% (42/48) | -2.1 | REVERT | Within noise of best; splitting topics into two headings dilutes the winning single-anchor pattern |
+| 23 | Search-term synonyms in parentheses at the fact | 87.5% (42/48) | -2.1 | REVERT | Again 42/48 — three straight experiments land exactly here; best (43/48) may be a lucky sample of the same rule set |
