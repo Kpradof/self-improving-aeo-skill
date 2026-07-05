@@ -14,3 +14,4 @@ Eval simulates answer-engine retrieval: page split into ~120-word chunks, best-m
 | 04 | FAQ section restating key facts as Q&A pairs | 83.3% (40/48) | 0.0 | REVERT | Neutral: FAQ chunk competes with body chunk for retrieval, splitting keyword mass instead of adding coverage |
 | 05 | Short single-topic paragraphs (max 3 sentences) | 77.1% (37/48) | -6.2 | REVERT | Surprising: fragmenting hurts — tiny paragraphs get grouped into chunks with weaker per-question keyword density |
 | 06 | Mirror plain query vocabulary next to every fact | 81.2% (39/48) | -2.1 | REVERT | Below best despite per-page gains on 01/05 — rewrite variance is real (~±2 pts); single-rule deltas under ~3 pts are noise |
+| 07 | Cut factless marketing filler (page may shrink to 50%) | 83.3% (40/48) | 0.0 | REVERT | Tie — fluff removal helps density but loses incidental keyword matches; net zero |
