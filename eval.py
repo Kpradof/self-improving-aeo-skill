@@ -15,6 +15,7 @@ FIXED FILE — the experiment agent must never modify this script.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -111,8 +112,18 @@ JUDGE_SCHEMA = {
 }
 
 
+CACHE_DIR = REPO / "output" / ".cache" / "eval"
+
+
 def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict) -> bool:
     excerpt = retrieve_chunk(chunks, q["q"])
+    # Credit-safe cache: identical (models, excerpt, question, gold) → reuse verdict.
+    key = hashlib.sha256(
+        f"{READER_MODEL}\n{JUDGE_MODEL}\n{excerpt}\n{q['q']}\n{q['gold']}".encode()
+    ).hexdigest()
+    cache_file = CACHE_DIR / key
+    if cache_file.exists():
+        return cache_file.read_text() == "1"
     answer_resp = client.messages.create(
         model=READER_MODEL,
         max_tokens=100,
@@ -145,7 +156,10 @@ def grade_question(client: anthropic.Anthropic, chunks: list[str], q: dict) -> b
         ],
     )
     verdict = json.loads(next(b.text for b in judge_resp.content if b.type == "text"))
-    return bool(verdict["correct"])
+    correct = bool(verdict["correct"])
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache_file.write_text("1" if correct else "0")
+    return correct
 
 
 def eval_page(client: anthropic.Anthropic, page_dir: Path, doc_path: Path) -> tuple[str, int, int]:

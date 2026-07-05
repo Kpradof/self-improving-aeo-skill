@@ -9,6 +9,7 @@ The only lever in the loop is the content of SKILL.md.
 """
 
 import argparse
+import hashlib
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -47,20 +48,32 @@ REWRITE RULES:
 </rules>"""
 
 
+CACHE_DIR = REPO / "output" / ".cache" / "rewrite"
+
+
 def rewrite_page(client: anthropic.Anthropic, system: str, page_dir: Path, out_dir: Path) -> str:
     original = (page_dir / "original.md").read_text()
-    response = client.messages.create(
-        model=REWRITER_MODEL,
-        max_tokens=4000,
-        system=system,
-        messages=[
-            {
-                "role": "user",
-                "content": f"Rewrite this page:\n\n{original}",
-            }
-        ],
-    )
-    text = next(b.text for b in response.content if b.type == "text")
+    # Credit-safe cache: identical (model, rules, page) → reuse previous output,
+    # no API call. Also makes repeat runs of the same SKILL.md state deterministic.
+    key = hashlib.sha256(f"{REWRITER_MODEL}\n{system}\n{original}".encode()).hexdigest()
+    cache_file = CACHE_DIR / f"{key}.md"
+    if cache_file.exists():
+        text = cache_file.read_text()
+    else:
+        response = client.messages.create(
+            model=REWRITER_MODEL,
+            max_tokens=4000,
+            system=system,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Rewrite this page:\n\n{original}",
+                }
+            ],
+        )
+        text = next(b.text for b in response.content if b.type == "text")
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        cache_file.write_text(text)
     out_page = out_dir / page_dir.name
     out_page.mkdir(parents=True, exist_ok=True)
     (out_page / "rewritten.md").write_text(text)
