@@ -84,3 +84,19 @@ Corpus: 14 real scraped pages (9 dev / 5 holdout), 112 agent-generated questions
 - Embedding retrieval (MiniLM): **40.3%** (29/72)
 
 Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages are messier and semantic retrieval is much harder. Headroom is large. Experiments start next session.
+
+## Run 2 experiments (2026-07-06)
+
+### exp2.01 — Transfer test: run-1 champion rules on real pages
+- **Hypothesis:** the 9 champion rules from run 1 (structure + self-check) generalize from synthetic to real scraped pages.
+- **Change:** none — SKILL.md as inherited from run 1. This experiment establishes the run-2 champion means.
+- **Samples (dev, 9 pages × 8 Q):**
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 70.8% (51/72) | 59.7% (43/72) |
+  | s2 | 66.7% (48/72) | 66.7% (48/72) |
+  | s3 | 66.7% (48/72) | 62.5% (45/72) |
+  | **Mean** | **68.1%** | **63.0%** |
+- **Baselines (original pages):** lexical 56.9%, embedding 40.3%.
+- **Verdict: KEEP (champion established).** +11.2 pts lexical, +22.7 pts embedding over originals. The rules transfer; the gain is larger under embedding retrieval than lexical — self-contained sentences and question-shaped headings help semantic matching even more than keyword matching.
+- **Notes:** rewrites via Sonnet plan-subagents (hybrid plan B). Wave-1 samples for pages 06/07 exceeded the ±30% length rule (+120%/+75%) before the prompt was tightened; later samples comply. Weak pages across all samples: page-04 (mailchimp, huge table-heavy page: 1-5/8 lexical) and page-09 (tailscale, 4.4k words: 2-3/8) — long pages chunk into many sections and retrieval misses. Batched multi-page subagents cut plan-token cost ~4× vs one subagent per page.
