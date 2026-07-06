@@ -100,3 +100,17 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 - **Baselines (original pages):** lexical 56.9%, embedding 40.3%.
 - **Verdict: KEEP (champion established).** +11.2 pts lexical, +22.7 pts embedding over originals. The rules transfer; the gain is larger under embedding retrieval than lexical — self-contained sentences and question-shaped headings help semantic matching even more than keyword matching.
 - **Notes:** rewrites via Sonnet plan-subagents (hybrid plan B). Wave-1 samples for pages 06/07 exceeded the ±30% length rule (+120%/+75%) before the prompt was tightened; later samples comply. Weak pages across all samples: page-04 (mailchimp, huge table-heavy page: 1-5/8 lexical) and page-09 (tailscale, 4.4k words: 2-3/8) — long pages chunk into many sections and retrieval misses. Batched multi-page subagents cut plan-token cost ~4× vs one subagent per page.
+
+### exp2.02 — Per-plan sections instead of one big comparison table
+- **Hypothesis:** on multi-plan pages, plan facts buried in one large comparison table fail retrieval — 120-word chunking separates the header row (plan names) from value rows, and every chunk mentions all plan names, so lexical overlap ties and misses. Offline diagnosis of exp2.01 s3: gold-answer coverage of the retrieved chunk was 0.00–0.33 for most page-04/page-09 questions.
+- **Change:** new rule 9 — each plan/tier gets its own section with a question-phrased heading naming the plan; every fact about the plan lives inside its section, each row naming the plan; never present plan facts only in one comparison table spanning plans.
+- **Samples (dev):**
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 79.2% (57/72) | 66.7% (48/72) |
+  | s2 | 72.2% (52/72) | 68.1% (49/72) |
+  | s3 | 75.0% (54/72) | 69.4% (50/72) |
+  | **Mean** | **75.5%** | **68.1%** |
+- **Champion means:** lexical 68.1%, embedding 63.0%.
+- **Verdict: KEEP.** +7.4 lexical, +5.1 embedding — beats champion in both modes; first run-2 rule accepted under mean-of-3 dual gating. New champion means: lexical 75.5%, embedding 68.1%.
+- **Insight:** the run-1 "tables win" finding inverts on real pages — tables help only when they are small and single-topic. Cross-plan comparison tables are a retrieval hazard: chunking destroys row–header adjacency. Restructuring to per-plan sections is the single biggest real-page gain so far.
