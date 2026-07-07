@@ -114,3 +114,17 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 - **Champion means:** lexical 68.1%, embedding 63.0%.
 - **Verdict: KEEP.** +7.4 lexical, +5.1 embedding — beats champion in both modes; first run-2 rule accepted under mean-of-3 dual gating. New champion means: lexical 75.5%, embedding 68.1%.
 - **Insight:** the run-1 "tables win" finding inverts on real pages — tables help only when they are small and single-topic. Cross-plan comparison tables are a retrieval hazard: chunking destroys row–header adjacency. Restructuring to per-plan sections is the single biggest real-page gain so far.
+
+### exp2.03 — Compact sections (~100 words) so heading + facts share one chunk
+- **Hypothesis:** remaining failures are chunk-boundary splits — a long section's heading (with the plan name) lands in one 120-word chunk while its facts land in the next, which no longer names the entity. Capping sections at ~100 words should keep heading and facts together.
+- **Change:** added rule 10 — section heading plus facts fit within ~100 words; split larger topics into narrower question-phrased subsections.
+- **Samples (dev):**
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 73.6% (53/72) | 75.0% (54/72) |
+  | s2 | 70.8% (51/72) | 61.1% (44/72) |
+  | s3 | 70.8% (51/72) | 63.9% (46/72) |
+  | **Mean** | **71.7%** | **66.7%** |
+- **Champion means:** lexical 75.5%, embedding 68.1%.
+- **Verdict: REVERT.** −3.8 lexical, −1.4 embedding. s1's 75.0% embedding was a lucky sample — exactly the trap mean-of-3 gating exists to catch.
+- **Insight:** forcing many tiny sections backfires: it multiplies the number of sections that share vocabulary (every mini-section repeats the plan/product name per rule 4), so retrieval contrast BETWEEN sections drops — the same failure family as run 1's keyword-density experiments. Section size isn't the lever; distinctive per-section vocabulary is. Splitting also pushed rewriters to shed length (several samples landed at −25–30%), dropping secondary facts.
