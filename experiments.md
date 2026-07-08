@@ -128,3 +128,17 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 - **Champion means:** lexical 75.5%, embedding 68.1%.
 - **Verdict: REVERT.** −3.8 lexical, −1.4 embedding. s1's 75.0% embedding was a lucky sample — exactly the trap mean-of-3 gating exists to catch.
 - **Insight:** forcing many tiny sections backfires: it multiplies the number of sections that share vocabulary (every mini-section repeats the plan/product name per rule 4), so retrieval contrast BETWEEN sections drops — the same failure family as run 1's keyword-density experiments. Section size isn't the lever; distinctive per-section vocabulary is. Splitting also pushed rewriters to shed length (several samples landed at −25–30%), dropping secondary facts.
+
+### exp2.04 — Contrast clause in the self-check (de-duplicate shared phrasing between sections)
+- **Hypothesis:** remaining failures are keyword ties — several sections mention the same plan name or phrases like "free trial", and retrieval picks the wrong one. Extending the self-check to reword the non-answering section should break ties.
+- **Change:** appended to rule 10's self-check: if two sections tie on a question's key words, reword the non-answering section to drop the shared phrasing.
+- **Samples (dev):**
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 73.6% (53/72) | 66.7% (48/72) |
+  | s2 | 75.0% (54/72) | 58.3% (42/72) |
+  | s3 | 68.1% (49/72) | 58.3% (42/72) |
+  | **Mean** | **72.2%** | **61.1%** |
+- **Champion means:** lexical 75.5%, embedding 68.1%.
+- **Verdict: REVERT.** −3.3 lexical, −7.0 embedding.
+- **Insight:** breaking lexical ties by *removing* shared phrasing is a trade, not a win: the reworded sections lose their explicit entity mentions, which is exactly what embedding retrieval keys on (rule 4's self-containment). Contrast must come from *adding* distinctive vocabulary to the answering section, never from stripping entities out of neighbors. Both run-2 REVERTs (2.03, 2.04) tried to fight retrieval ties by weakening other sections; both lost embedding points — the metric pair is doing its job.
