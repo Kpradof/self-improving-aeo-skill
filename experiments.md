@@ -142,3 +142,7 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 - **Champion means:** lexical 75.5%, embedding 68.1%.
 - **Verdict: REVERT.** −3.3 lexical, −7.0 embedding.
 - **Insight:** breaking lexical ties by *removing* shared phrasing is a trade, not a win: the reworded sections lose their explicit entity mentions, which is exactly what embedding retrieval keys on (rule 4's self-containment). Contrast must come from *adding* distinctive vocabulary to the answering section, never from stripping entities out of neighbors. Both run-2 REVERTs (2.03, 2.04) tried to fight retrieval ties by weakening other sections; both lost embedding points — the metric pair is doing its job.
+
+### exp2.05 — Direct-answer opening sentence per section (ABORTED)
+- **Hypothesis:** concentrate matching vocabulary in the answering section by opening every section with a sentence that restates the heading's key words plus the exact answer value (the additive counterpart to exp2.04's failed subtractive tie-breaking).
+- **Status: aborted at sample 1 (partial)** — diminishing returns after two consecutive REVERTs; run closed early by decision. Untested, not disproven — first candidate for a future run 3.
