@@ -146,3 +146,30 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 ### exp2.05 — Direct-answer opening sentence per section (ABORTED)
 - **Hypothesis:** concentrate matching vocabulary in the answering section by opening every section with a sentence that restates the heading's key words plus the exact answer value (the additive counterpart to exp2.04's failed subtractive tie-breaking).
 - **Status: aborted at sample 1 (partial)** — diminishing returns after two consecutive REVERTs; run closed early by decision. Untested, not disproven — first candidate for a future run 3.
+
+### Holdout check (run 2 final) — champion rules, 5 never-seen pages, mean of 3 samples
+| Sample | Lexical | Embedding |
+|---|---|---|
+| Baseline (originals) | 65.0% (26/40) | 55.0% (22/40) |
+| h1 | 67.5% (27/40) | 52.5% (21/40) |
+| h2 | 65.0% (26/40) | 60.0% (24/40) |
+| h3 | 65.0% (26/40) | 75.0% (30/40) |
+| **Mean (rewritten)** | **65.8%** | **62.5%** |
+| **Gain vs baseline** | **+0.8** | **+7.5** |
+
+## Run 2 summary (2026-07-05 → 2026-07-08)
+
+**Setup:** 14 real scraped pages (9 dev / 5 holdout), 112 isolated-agent questions, mean-of-3 gating, dual retrieval (lexical + MiniLM embedding), Sonnet plan-subagent rewrites + cached API Haiku eval (~$5 API total).
+
+**Results (dev):** baseline 56.9% lex / 40.3% emb → champion 75.5% lex / 68.1% emb (+18.6 / +27.8). One KEEP (exp2.02 per-plan sections), two REVERTs (exp2.03 section-size cap, exp2.04 subtractive tie-breaking), one abort (exp2.05).
+
+**Results (holdout):** +0.8 lex / +7.5 emb. The dev gain did not fully transfer.
+
+**What run 2 established:**
+1. **Per-plan sections beat cross-plan comparison tables** (exp2.02) — the single most robust rule found on real pages; 120-word chunking destroys row–header adjacency in wide tables.
+2. **Embedding retrieval benefits more consistently than lexical** from AEO restructuring, on dev AND holdout. Self-contained, entity-named sections are fundamentally a semantic-matching improvement.
+3. **The honest headline: most of the dev-set gain was adaptation, not generalization.** Run 1's synthetic holdout (+20.8) flattered the method; real never-seen pages show +0.8 lex / +7.5 emb. Rules were selected BY dev performance, so dev numbers overstate transfer — the whole point of keeping an untouched holdout.
+4. **Holdout embedding variance across rewrite samples was enormous (52.5% → 75.0%)** — single-sample "before/after AEO" case studies, the industry standard, are statistically meaningless at page scale.
+5. Both REVERTs failed the same way: fighting retrieval ties by weakening neighboring sections loses embedding points. Contrast must be additive (untested exp2.05 hypothesis), never subtractive.
+
+**Run 3 candidates:** direct-answer opening sentences (exp2.05, aborted untested) · larger holdout to cut eval noise · per-page-type rules (long guides vs short pricing) · optimize against embedding retrieval only, since that's where restructuring reliably pays.
