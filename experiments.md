@@ -173,3 +173,36 @@ Run 1's synthetic corpus overstated page quality (66.7% baseline); real pages ar
 5. Both REVERTs failed the same way: fighting retrieval ties by weakening neighboring sections loses embedding points. Contrast must be additive (untested exp2.05 hypothesis), never subtractive.
 
 **Run 3 candidates:** direct-answer opening sentences (exp2.05, aborted untested) · larger holdout to cut eval noise · per-page-type rules (long guides vs short pricing) · optimize against embedding retrieval only, since that's where restructuring reliably pays.
+
+---
+
+## Day 5 session (2026-07-17): exp2.05 rerun
+
+### exp2.05 — Direct-answer opening sentence per section (KEEP)
+
+- **Hypothesis:** run 2's closing insight said contrast must be additive, never subtractive. Opening every section with one sentence that fully answers the heading question (naming the entity) should strengthen the right chunk for both retrievals without weakening neighbors.
+- **Change:** added rule 10 to SKILL.md (self-check renumbered to 11).
+- **Method note:** rewriter switched to `claude-opus-4-8` via API for this session. `claude-sonnet-5` (run 2's rewriter family) now spends the entire 4000-token budget of `rewrite.py` on default thinking and returns no text block. Because the rewriter changed, the champion was **re-baselined with the same Opus rewriter** for a like-for-like gate (3 samples each side, ~$5 API).
+- **Champion re-baseline (Opus, mean of 3):**
+
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 68.1% (49/72) | 55.6% (40/72) |
+  | s2 | 65.3% (47/72) | 61.1% (44/72) |
+  | s3 | 62.5% (45/72) | 62.5% (45/72) |
+  | **Mean** | **65.3%** | **59.7%** |
+
+- **exp2.05 (Opus, mean of 3):**
+
+  | Sample | Lexical | Embedding |
+  |---|---|---|
+  | s1 | 65.3% (47/72) | 58.3% (42/72) |
+  | s2 | 65.3% (47/72) | 58.3% (42/72) |
+  | s3 | 76.4% (55/72) | 68.1% (49/72) |
+  | **Mean** | **69.0%** | **61.6%** |
+
+- **Verdict: KEEP.** Lexical mean 69.0 > 65.3 and embedding mean 61.6 ≥ 59.7. Caveat logged honestly: the win is concentrated in s3 (76.4/68.1); lexical spread 65.3–76.4 is wide, so this KEEP is weaker evidence than exp2.02's and should be re-gated in run 3 with 5 samples.
+- **Insight 1:** first additive-contrast rule to beat the champion, exactly the direction run 2's REVERTs pointed to.
+- **Insight 2 (methodological, big):** the rewriter model is a larger lever than any single rule. The same champion SKILL.md scores 75.5/68.1 with Sonnet-subagent rewrites but 65.3/59.7 with Opus API rewrites (~10 pts). Future runs must pin the rewriter and re-baseline whenever it changes.
+
+**Cumulative: 56 experiments across 5 days of autonomous work (2026-07-05 → 08 + 2026-07-17).**
